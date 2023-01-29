@@ -3,16 +3,33 @@ const canvas = document.querySelector("canvas");
 console.log(canvas);
 const ctx = canvas.getContext("2d");
 const dpr = window.devicePixelRatio;
-// 캔버스 width 와 캔버스 style width 맞추기
-const canvasWidth = innerWidth;
-const canvasHeight = innerHeight;
-canvas.style.width = canvasWidth + "px";
-canvas.style.height = canvasHeight + "px";
+let canvasWidth;
+let canvasHeight;
+let particles;
 
-canvas.width = canvasWidth * dpr;
-canvas.height = canvasHeight * dpr;
+function init() {
+  // 캔버스 width 와 캔버스 style width 맞추기
+  canvasWidth = innerWidth;
+  canvasHeight = innerHeight;
+  canvas.style.width = canvasWidth + "px";
+  canvas.style.height = canvasHeight + "px";
 
-ctx.scale(dpr, dpr);
+  canvas.width = canvasWidth * dpr;
+  canvas.height = canvasHeight * dpr;
+
+  ctx.scale(dpr, dpr);
+  particles = [];
+  const TOTAL = canvasWidth / 100;
+  //파티클을 여러개 만들어주기
+  for (let i = 0; i < TOTAL; i++) {
+    const x = randomNumBetween(0, canvasWidth);
+    const y = randomNumBetween(0, canvasHeight);
+    const radius = randomNumBetween(50, 100);
+    const vy = randomNumBetween(1, 5);
+    const particle = new Particle(x, y, radius, vy);
+    particles.push(particle);
+  }
+}
 
 const controls = new (function () {
   this.blurValue = 40;
@@ -27,7 +44,7 @@ const feColorMatrix = document.querySelector("feColorMatrix");
 let gui = new dat.GUI();
 
 const f1 = gui.addFolder("Gooey Effect");
-f1.open();
+f1.open(); //폴더 열린 상태로 시작하기
 const f2 = gui.addFolder("Particle Property");
 f2.open();
 
@@ -80,23 +97,10 @@ class Particle {
 // const y = 100;
 // const radius = 50;
 // const particle = new Particle(x, y, radius);
-const TOTAL = 20;
 
 const randomNumBetween = (min, max) => {
   return Math.random() * (max - min + 1) + min;
 };
-
-let particles = [];
-
-//파티클을 여러개 만들어주기
-for (let i = 0; i < TOTAL; i++) {
-  const x = randomNumBetween(0, canvasWidth);
-  const y = randomNumBetween(0, canvasHeight);
-  const radius = randomNumBetween(50, 100);
-  const vy = randomNumBetween(1, 5);
-  const particle = new Particle(x, y, radius, vy);
-  particles.push(particle);
-}
 
 let interval = 1000 / 60; //60FPS
 let now, delta;
@@ -127,4 +131,12 @@ function animate() {
 
   then = now - (delta % interval);
 }
-animate();
+
+window.addEventListener("load", () => {
+  init();
+  animate();
+});
+
+window.addEventListener("resize", () => {
+  init();
+});

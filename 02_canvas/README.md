@@ -121,3 +121,37 @@ animate()
 # svg filter
 
 https://yoksel.github.io/svg-filters/#/
+
+# resize
+
+- resize 해도 캔버스크기는 고정되어있음
+  -> canvasWidth, canvasHeight를 새로운 innerWidth , innerHeight로 바꾸어야함
+- canvasWidth, canvasHeight 설정하는 코드와 canvasWidth 와 canvasHeight를 매개변수로 받아 particle을 생성하는 코드를 따로 빼서 resize 시 실행될 함수 안에 넣는다!
+
+```
+function init() {
+  // 캔버스 width 와 캔버스 style width 맞추기
+  canvasWidth = innerWidth;
+  canvasHeight = innerHeight;
+  canvas.style.width = canvasWidth + "px";
+  canvas.style.height = canvasHeight + "px";
+
+  canvas.width = canvasWidth * dpr;
+  canvas.height = canvasHeight * dpr;
+
+  ctx.scale(dpr, dpr);
+
+//파티클을 여러개 만들어주기
+for (let i = 0; i < TOTAL; i++) {
+  const x = randomNumBetween(0, canvasWidth);
+  const y = randomNumBetween(0, canvasHeight);
+  const radius = randomNumBetween(50, 100);
+  const vy = randomNumBetween(1, 5);
+  const particle = new Particle(x, y, radius, vy);
+  particles.push(particle);
+}
+
+
+}
+
+```
