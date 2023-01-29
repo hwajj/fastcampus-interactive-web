@@ -20,6 +20,7 @@ class Particle {
     this.y = y;
     this.radius = radius;
     this.vy = vy;
+    this.acc = 1.03;
   }
 
   draw() {
@@ -32,7 +33,9 @@ class Particle {
   }
 
   update() {
-    this.y += this.vy;
+    this.vy *= this.acc; // 속도 가속도 붙여서 높이기
+    //  this.vy += 1; //속도 일정한 간격으로 높이기
+    this.y += this.vy; //가속도
   }
 }
 
@@ -54,7 +57,6 @@ for (let i = 0; i < TOTAL; i++) {
   const y = randomNumBetween(0, canvasHeight);
   const radius = randomNumBetween(50, 100);
   const vy = randomNumBetween(1, 5);
-  1, 5;
   const particle = new Particle(x, y, radius, vy);
   particles.push(particle);
 }
@@ -87,6 +89,5 @@ function animate() {
   });
 
   then = now - (delta % interval);
-  console.log(then);
 }
 animate();
