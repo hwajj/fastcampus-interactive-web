@@ -81,7 +81,7 @@ animate()
 - 내 코드가 컴퓨터의 주사율에 상관없이 동일한 속도로 이동하는 결과를 보여주려면?
   FPS(Frame Per Second) : 1초에 requestAnimationFrame 몇번 실행시킬까 ?
 
-## 모니터마다 같은 비율로 프레임 실행되게 하려면?
+## 모니터마다 동일한 시각에 동일한 동작 실행되게 하려면?
 
 - 전제
   내 모니터 주사율이 60Hz라면 1초에 60번 실행한다
@@ -103,3 +103,21 @@ animate()
 
   _100ms를 delta로 놓고 일정하게 증가하는 date.now() 에서
   증가하는 date.now() 가 100ms를 초과할때마다가 requestAnimationFrame 실행시켜주면 됨. 실행시켜 준 뒤에는 증가한 date.now에서 100빼고 다시 증가하는 date.now() 재줌.._
+
+# 가속도
+
+- 속도에 일정 값을 더해주기
+- 1이하의 값을 곱해주면 무한으로 곱해줄때 0으로 수렴 ~ 정지
+- 1이상의 값을 곱해주면 가속도 효과
+
+```
+  update() {
+    this.vy *= this.acc; // 속도 가속도 붙여서 높이기
+    //  this.vy += 1; //속도 일정한 간격으로 높이기
+    this.y += this.vy; //가속도
+  }
+```
+
+# svg filter
+
+https://yoksel.github.io/svg-filters/#/
